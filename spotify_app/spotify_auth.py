@@ -18,10 +18,10 @@ class SpotifyAuth:
     # Base URL needed for authorisation
     _accounts_url = 'https://accounts.spotify.com'
 
-    def __init__(self, client_id: str, client_secret: str, redirect_uri: str, scope_choice: Optional[list[str]] = None):
+    def __init__(self, client_id: str, redirect_uri: str, scope_choice: Optional[list[str]] = None):
         self._state = None
         self.client_id = client_id
-        self.client_secret = client_secret
+        # self.client_secret = client_secret
         self.redirect_uri = redirect_uri
         self.scope_choice = scope_choice
 
