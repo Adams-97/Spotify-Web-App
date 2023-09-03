@@ -9,7 +9,6 @@ class SpotifyAuth:
 
     Attributes:
         client_id (str): client_id given by Spotify
-        client_secret (str): client_secret given by Spotify
         redirect_uri (str): URL that Spotify redirects to after user login
         scope_choice (list): List of all scope choices chosen for session
 
@@ -19,9 +18,8 @@ class SpotifyAuth:
     _accounts_url = 'https://accounts.spotify.com'
 
     def __init__(self, client_id: str, redirect_uri: str, scope_choice: Optional[list[str]] = None):
-        self._state = None
+        self.state = None
         self.client_id = client_id
-        # self.client_secret = client_secret
         self.redirect_uri = redirect_uri
         self.scope_choice = scope_choice
 
@@ -36,7 +34,7 @@ class SpotifyAuth:
         """
 
         # Generate random 30 character string to identify requests/responses
-        self._state = ''.join(random.choices(string.ascii_letters + string.digits + string.punctuation, k=state_len))
+        self.state = ''.join(random.choices(string.ascii_letters + string.digits + string.punctuation, k=state_len))
 
     def start_redirect(self, show_dialog=False):
         """Prepares the URL to start Spotify auth process with user
@@ -59,7 +57,7 @@ class SpotifyAuth:
         if self.scope_choice is not None:
             query_params['scope'] = ' '.join(self.scope_choice)
 
-        if self._state is not None:
-            query_params['state'] = self._state
+        if self.state is not None:
+            query_params['state'] = self.state
 
-        return self._accounts_url + '?' + urlencode(query_params)
+        return self._accounts_url + '/authorize?' + urlencode(query_params)
