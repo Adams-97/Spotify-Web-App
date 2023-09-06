@@ -8,29 +8,37 @@ load_dotenv(path.join(basedir, ".env.secret"))
 
 
 class Config:
-    """Basic config that gets overwritten by the subclasses below."""
+    """Basic dev config that gets overwritten by the subclasses below."""
+    APP_MODE = environ.get('APP_MODE', 'DEV')
     HOST = environ.get('HOST', '127.0.0.1')
     PORT = environ.get('PORT', 5000)
     CLIENT_ID = environ.get('CLIENT_ID')
     REDIRECT_URI = environ.get('REDIRECT_URI')
-
-
-class DevConfig(Config):
-    DEBUG = True
+    DB_DIALECT = environ.get('DIALECT', 'sqlite')  # Default to db in local area
+    DB_USER = environ.get('DB_USER', '')
+    DB_PASS = environ.get('DB_PASS', '')
+    DB_HOST = environ.get('DB_HOST', '')
+    DB_PORT = environ.get('DB_PORT', '')
+    DB_DATABASE = environ.get('DB_DATABASE', 'dev_db.db')  # Default to db in local area
+    DB_QUERY = environ.get('DB_QUERY', '')
 
 
 class ProdConfig(Config):
-    pass
+    DEBUG = False
 
 
 class TestConfig(Config):
-    pass
+    DIALECT = environ.get('DB_DIALECT')
 
 
 # APP_MODE env var can then be used to decide flask configuration
 config_dic = {
-    'DEV': DevConfig,
+    'DEV': Config,
     'TEST': TestConfig,
     'PROD': ProdConfig
 }
-app_config = config_dic[environ['APP_MODE']]
+
+try:
+    app_config = config_dic[environ['APP_MODE']]
+except KeyError:
+    print('APP_MODE environment variable needs to be set to any of:\n DEV, PROD, TEST')
