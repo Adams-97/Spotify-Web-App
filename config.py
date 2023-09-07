@@ -3,8 +3,8 @@ from dotenv import load_dotenv
 
 # Loading in from secret and shared env files
 basedir = path.abspath(path.dirname(__file__))
-load_dotenv(path.join(basedir, ".env.shared"))
-load_dotenv(path.join(basedir, ".env.secret"))
+load_dotenv(path.join(basedir, '.env.shared'))
+load_dotenv(path.join(basedir, '.env.secret'))
 
 
 class Config:
@@ -15,12 +15,12 @@ class Config:
     CLIENT_ID = environ.get('CLIENT_ID')
     REDIRECT_URI = environ.get('REDIRECT_URI')
     DB_DIALECT = environ.get('DIALECT', 'sqlite')  # Default to db in local area
-    DB_USER = environ.get('DB_USER', '')
-    DB_PASS = environ.get('DB_PASS', '')
-    DB_HOST = environ.get('DB_HOST', '')
-    DB_PORT = environ.get('DB_PORT', '')
-    DB_DATABASE = environ.get('DB_DATABASE', 'dev_db.db')  # Default to db in local area
-    DB_QUERY = environ.get('DB_QUERY', '')
+    DB_USER = environ.get('DB_USER')
+    DB_PASS = environ.get('DB_PASS')
+    DB_HOST = environ.get('DB_HOST')
+    DB_PORT = environ.get('DB_PORT')
+    DATABASE = environ.get('DATABASE', 'dev_db.db')  # Default to db in local area
+    DB_QUERY = environ.get('DB_QUERY')
 
 
 class ProdConfig(Config):
@@ -29,6 +29,7 @@ class ProdConfig(Config):
 
 class TestConfig(Config):
     DIALECT = environ.get('DB_DIALECT')
+    TESTING = True
 
 
 # APP_MODE env var can then be used to decide flask configuration
